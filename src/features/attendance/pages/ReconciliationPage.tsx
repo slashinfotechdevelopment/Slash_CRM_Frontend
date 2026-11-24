@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect } from 'react';
 import { ListPage } from '@/components/templates/ListPage';
 import { Button } from '@/components/ui/Button';
@@ -96,7 +97,7 @@ export const ReconciliationPage: React.FC = () => {
       setIsTriggerOpen(false);
       refetch();
     } catch (err) {
-      toast.danger('Trigger Failed', err instanceof Error ? err.message : 'Unable to execute reconciliation.');
+      toast.danger('Trigger Failed', err instanceof Error ? getErrorMessage(err) : 'Unable to execute reconciliation.');
     } finally {
       setIsTriggering(false);
     }
@@ -110,7 +111,7 @@ export const ReconciliationPage: React.FC = () => {
       const details = await attendanceConnector.getReconciliationRunDetails(run.id);
       setSelectedRun(details);
     } catch (err) {
-      toast.danger('Error', err instanceof Error ? err.message : 'Failed to fetch reconciliation run details.');
+      toast.danger('Error', err instanceof Error ? getErrorMessage(err) : 'Failed to fetch reconciliation run details.');
     } finally {
       setLoadingDetail(false);
     }
@@ -128,7 +129,7 @@ export const ReconciliationPage: React.FC = () => {
       });
       setInspectionResult(res);
     } catch (err) {
-      toast.danger('Query Failed', err instanceof Error ? err.message : 'Could not fetch reconciliation status.');
+      toast.danger('Query Failed', err instanceof Error ? getErrorMessage(err) : 'Could not fetch reconciliation status.');
     } finally {
       setLoadingInspection(false);
     }

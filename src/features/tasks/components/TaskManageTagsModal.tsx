@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React from 'react';
 import { FormModal } from '@/components/templates/FormModal';
 import { Input } from '@/components/ui/Input';
@@ -48,7 +49,7 @@ export const TaskManageTagsModal: React.FC<TaskManageTagsModalProps> = ({
       setNewTagName('');
       onTagsUpdated();
     } catch (err) {
-      toast.danger(err.message || 'Failed to create tag');
+      toast.danger(getErrorMessage(err, 'Failed to create tag'));
     } finally {
       setIsSubmitting(false);
     }
@@ -68,7 +69,7 @@ export const TaskManageTagsModal: React.FC<TaskManageTagsModalProps> = ({
         toast.success(`Tag "${tag.name}" deleted successfully.`);
         onTagsUpdated();
       } catch (err) {
-        toast.danger(err.message || 'Failed to delete tag.');
+        toast.danger(getErrorMessage(err, 'Failed to delete tag.'));
       }
     }
   };

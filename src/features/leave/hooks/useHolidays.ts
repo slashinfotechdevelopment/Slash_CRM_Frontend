@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import { useState, useCallback, useEffect } from 'react';
 import { leaveConnector } from '@/connectors/leave.connector';
 import { Holiday, WeeklyOffPolicy, WorkCalendarScope } from '@/api/types/leave.types';
@@ -145,7 +146,7 @@ export const useHolidays = () => {
       setIsHolidayModalOpen(false);
       await loadHolidays();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to save holiday.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to save holiday.';
       setHolidayError(msg);
     } finally {
       setIsSubmittingHoliday(false);
@@ -178,7 +179,7 @@ export const useHolidays = () => {
       setSyncMessage(res.message || 'Holidays synchronized successfully!');
       await loadHolidays();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to synchronize with Google Calendar.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to synchronize with Google Calendar.';
       setSyncMessage(msg);
     } finally {
       setIsSyncing(false);
@@ -213,7 +214,7 @@ export const useHolidays = () => {
       setIsWeeklyOffModalOpen(false);
       await loadWeeklyOffs();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to create weekly off policy.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to create weekly off policy.';
       setWeeklyOffError(msg);
     } finally {
       setIsSubmittingWeeklyOff(false);

@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { leaveConnector } from '@/connectors/leave.connector';
@@ -137,7 +138,7 @@ export const LeaveBalancesPage: React.FC = () => {
       setAdjustForm((prev) => ({ ...prev, reason: '', adjustedDays: 1 }));
       await Promise.all([loadBalances(), loadTransactions()]);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to adjust balance.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to adjust balance.';
       setAdjustError(msg);
     } finally {
       setIsSubmittingAdjust(false);

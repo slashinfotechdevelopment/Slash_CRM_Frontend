@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useToast } from '@/hooks/useToast';
 import { useConfirm } from '@/hooks/useConfirm';
@@ -157,7 +158,7 @@ export function useUsersList() {
       });
       refresh();
     } catch (err: unknown) {
-      setFormError((err as Error).message || 'Failed to create user account.');
+      setFormError(getErrorMessage(err, 'Failed to create user account.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -205,7 +206,7 @@ export function useUsersList() {
       setIsEditModalOpen(false);
       refresh();
     } catch (err: unknown) {
-      setFormError((err as Error).message || 'Failed to update user profile.');
+      setFormError(getErrorMessage(err, 'Failed to update user profile.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -247,7 +248,7 @@ export function useUsersList() {
       setIsStatusModalOpen(false);
       refresh();
     } catch (err: unknown) {
-      setFormError((err as Error).message || 'Failed to transition user account status.');
+      setFormError(getErrorMessage(err, 'Failed to transition user account status.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -270,7 +271,7 @@ export function useUsersList() {
         toast.success(`User ${user.name} has been deactivated.`);
         refresh();
       } catch (err: unknown) {
-        toast.danger((err as Error).message || 'Failed to deactivate user.');
+        toast.danger(getErrorMessage(err, 'Failed to deactivate user.'));
       }
     },
     [confirm, toast, refresh]
@@ -293,7 +294,7 @@ export function useUsersList() {
         toast.success(`User ${user.name} restored successfully.`);
         refresh();
       } catch (err: unknown) {
-        toast.danger((err as Error).message || 'Failed to restore user.');
+        toast.danger(getErrorMessage(err, 'Failed to restore user.'));
       }
     },
     [confirm, toast, refresh]

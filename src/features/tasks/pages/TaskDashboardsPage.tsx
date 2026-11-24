@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Tabs, TabItem } from '@/components/ui/Tabs';
 import { DetailSkeleton } from '@/components/feedback/Skeleton';
@@ -37,7 +38,7 @@ export const TaskDashboardsPage: React.FC = () => {
         setOrgData(res);
       }
     } catch (err: unknown) {
-      setError((err as Error).message || 'Failed to fetch task metrics');
+      setError(getErrorMessage(err, 'Failed to fetch task metrics'));
     } finally {
       setIsLoading(false);
     }

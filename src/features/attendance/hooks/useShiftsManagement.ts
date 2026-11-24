@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import { useState } from 'react';
 import { useToast } from '@/hooks/useToast';
 import { useConfirm } from '@/hooks/useConfirm';
@@ -69,7 +70,7 @@ export const useShiftsManagement = (
       setPaidBreakAllowance(details.breakPolicy?.paidAllowanceMinutes || 60);
       setIsShiftModalOpen(true);
     } catch (err: unknown) {
-      toast.danger('Error', err instanceof Error ? err.message : 'Failed to load shift details.');
+      toast.danger('Error', err instanceof Error ? getErrorMessage(err) : 'Failed to load shift details.');
     }
   };
 
@@ -111,7 +112,7 @@ export const useShiftsManagement = (
       setIsShiftModalOpen(false);
       onRefreshShifts();
     } catch (err: unknown) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Could not save shift definition.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Could not save shift definition.');
     } finally {
       setIsShiftSubmitting(false);
     }
@@ -132,7 +133,7 @@ export const useShiftsManagement = (
       toast.success('Deleted', 'Shift definition removed successfully.');
       onRefreshShifts();
     } catch (err: unknown) {
-      toast.danger('Delete Failed', err instanceof Error ? err.message : 'Cannot delete shift definition.');
+      toast.danger('Delete Failed', err instanceof Error ? getErrorMessage(err) : 'Cannot delete shift definition.');
     }
   };
 
@@ -186,7 +187,7 @@ export const useShiftsManagement = (
         onRefreshAssignments(selectedUserId);
       }
     } catch (err: unknown) {
-      toast.danger('Assignment Failed', err instanceof Error ? err.message : 'Unable to save shift assignment.');
+      toast.danger('Assignment Failed', err instanceof Error ? getErrorMessage(err) : 'Unable to save shift assignment.');
     } finally {
       setIsAssignSubmitting(false);
     }
@@ -209,7 +210,7 @@ export const useShiftsManagement = (
         onRefreshAssignments(selectedUserId);
       }
     } catch (err: unknown) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Failed to delete shift assignment.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Failed to delete shift assignment.');
     }
   };
 

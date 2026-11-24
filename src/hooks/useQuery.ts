@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { NormalizedError } from '@/api/client/errorMapper';
+import { NormalizedError, normalizeError } from '@/api/client/errorMapper';
 
 export interface UseQueryOptions<T> {
   enabled?: boolean;
@@ -36,9 +36,10 @@ export function useQuery<T>(
       }
     } catch (err) {
       if (isMountedRef.current) {
-        setError(err);
+        const norm = normalizeError(err);
+        setError(norm);
         setIsLoading(false);
-        optionsRef.current.onError?.(err);
+        optionsRef.current.onError?.(norm);
       }
     }
   }, [enabled, ...deps]);

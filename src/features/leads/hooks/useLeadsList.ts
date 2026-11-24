@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
+import { getErrorMessage } from '@/api/client/errorMapper';
 import { useInfiniteList } from '@/hooks/useInfiniteList';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
@@ -192,7 +193,7 @@ export function useLeadsList() {
       });
       refresh();
     } catch (err) {
-      setFormError(err?.message || 'Failed to create lead.');
+      setFormError(getErrorMessage(err, 'Failed to create lead.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -212,7 +213,7 @@ export function useLeadsList() {
         toast.success('Lead Deleted', `Lead ${lead.leadCode} removed from active roster.`);
         refresh();
       } catch (err) {
-        toast.danger('Delete Failed', err?.message || 'Unable to delete lead.');
+        toast.danger('Delete Failed', getErrorMessage(err, 'Unable to delete lead.'));
       }
     }
   };
@@ -230,7 +231,7 @@ export function useLeadsList() {
       setSelectedLead(null);
       refresh();
     } catch (err) {
-      toast.danger('Assignment Failed', err?.message || 'Could not assign lead.');
+      toast.danger('Assignment Failed', getErrorMessage(err, 'Could not assign lead.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -250,7 +251,7 @@ export function useLeadsList() {
       setSelectedLead(null);
       refresh();
     } catch (err) {
-      toast.danger('Update Failed', err?.message || 'Could not update status.');
+      toast.danger('Update Failed', getErrorMessage(err, 'Could not update status.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -269,7 +270,7 @@ export function useLeadsList() {
       window.URL.revokeObjectURL(url);
       toast.success('Export Ready', 'Leads CSV downloaded.');
     } catch (err) {
-      toast.danger('Export Failed', err?.message || 'Failed to export leads.');
+      toast.danger('Export Failed', getErrorMessage(err, 'Failed to export leads.'));
     }
   };
 
@@ -304,7 +305,7 @@ export function useLeadsList() {
         toast.info('Dry Run Completed', `Validated ${res.importedCount || 0} leads.`);
       }
     } catch (err) {
-      setFormError(err?.message || 'Lead import failed.');
+      setFormError(getErrorMessage(err, 'Lead import failed.'));
     } finally {
       setIsSubmitting(false);
     }

@@ -140,267 +140,98 @@ async function main() {
   }
 
   // -------------------------------------------------------------
-  // PART C: ATTENDANCE LIFECYCLE CYCLE (7 DISTINCT STATES)
+  // PART C: ATTENDANCE LIFECYCLE CYCLE (7 DISTINCT STATES ON REAL BACKEND)
   // -------------------------------------------------------------
-  console.log('\n--- Capturing Attendance Lifecycle Cycle (7 Distinct States) ---');
+  console.log('\n--- Capturing Attendance Lifecycle Cycle (Real Backend API, Zero Interception) ---');
   const vpDesktop = { width: 1280, height: 900 };
 
-  // 1. Not Checked In (Hari's live un-checked-in state)
-  await setSession(adminSession);
+  // 1. Not Checked In (Initial employee un-checked-in state)
+  await setSession(employeeSession);
   await page.goto(`${FRONTEND_URL}/attendance/my`, { waitUntil: 'networkidle2' });
   await saveScreenshot('proof_a1_1_not_checked_in.png', vpDesktop);
 
-  // Enable request interception for read-only lifecycle states (preserves live database integrity)
-  await page.setRequestInterception(true);
-
-  let interceptedMode = 'WORKING';
-  page.removeAllListeners('request');
-  page.on('request', (req) => {
-    if (req.url().includes('/api/attendance/today')) {
-      const corsHeaders = {
-        'access-control-allow-origin': '*',
-        'access-control-allow-credentials': 'true',
-        'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'access-control-allow-headers': '*'
-      };
-      if (interceptedMode === 'WORKING') {
-        req.respond({
-          status: 200,
-          contentType: 'application/json',
-          headers: corsHeaders,
-          body: JSON.stringify({
-            success: true,
-            data: {
-              date: '2026-11-24',
-              dateFormatted: '24-11-2026',
-              dateDisplay: '24 Nov 2026',
-              hasActiveSession: true,
-              activeSession: {
-                id: 'sess_live_123',
-                checkInAt: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
-                status: 'ACTIVE',
-                checkInTimeFormatted: '10:00 AM'
-              },
-              hasActiveBreak: false,
-              activeBreak: null,
-              record: null,
-              effectiveShift: {
-                id: 'shift_reg',
-                code: 'REGULAR_DAY',
-                name: 'Regular Day Shift (09:00 - 18:00)',
-                startTime: '09:00',
-                endTime: '18:00',
-                timeRangeDisplay: '09:00 AM to 06:00 PM'
-              }
-            }
-          })
-        });
-        return;
-      } else if (interceptedMode === 'REFRESHED') {
-        req.respond({
-          status: 200,
-          contentType: 'application/json',
-          headers: corsHeaders,
-          body: JSON.stringify({
-            success: true,
-            data: {
-              date: '2026-11-24',
-              dateFormatted: '24-11-2026',
-              dateDisplay: '24 Nov 2026',
-              hasActiveSession: true,
-              activeSession: {
-                id: 'sess_live_123',
-                checkInAt: new Date(Date.now() - 2 * 3600 * 1000 - 300 * 1000).toISOString(),
-                status: 'ACTIVE',
-                checkInTimeFormatted: '10:00 AM'
-              },
-              hasActiveBreak: false,
-              activeBreak: null,
-              record: null,
-              effectiveShift: {
-                id: 'shift_reg',
-                code: 'REGULAR_DAY',
-                name: 'Regular Day Shift (09:00 - 18:00)',
-                startTime: '09:00',
-                endTime: '18:00',
-                timeRangeDisplay: '09:00 AM to 06:00 PM'
-              }
-            }
-          })
-        });
-        return;
-      } else if (interceptedMode === 'BREAK') {
-        req.respond({
-          status: 200,
-          contentType: 'application/json',
-          headers: corsHeaders,
-          body: JSON.stringify({
-            success: true,
-            data: {
-              date: '2026-11-24',
-              dateFormatted: '24-11-2026',
-              dateDisplay: '24 Nov 2026',
-              hasActiveSession: true,
-              activeSession: {
-                id: 'sess_live_123',
-                checkInAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString(),
-                status: 'ACTIVE',
-                checkInTimeFormatted: '10:00 AM'
-              },
-              hasActiveBreak: true,
-              activeBreak: {
-                id: 'brk_live_456',
-                breakTypeId: 'LUNCH',
-                startedAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-                status: 'ACTIVE'
-              },
-              record: null,
-              effectiveShift: {
-                id: 'shift_reg',
-                code: 'REGULAR_DAY',
-                name: 'Regular Day Shift (09:00 - 18:00)',
-                startTime: '09:00',
-                endTime: '18:00',
-                timeRangeDisplay: '09:00 AM to 06:00 PM'
-              }
-            }
-          })
-        });
-        return;
-      } else if (interceptedMode === 'BREAK_ENDED') {
-        req.respond({
-          status: 200,
-          contentType: 'application/json',
-          headers: corsHeaders,
-          body: JSON.stringify({
-            success: true,
-            data: {
-              date: '2026-11-24',
-              dateFormatted: '24-11-2026',
-              dateDisplay: '24 Nov 2026',
-              hasActiveSession: true,
-              activeSession: {
-                id: 'sess_live_123',
-                checkInAt: new Date(Date.now() - 4 * 3600 * 1000).toISOString(),
-                status: 'ACTIVE',
-                checkInTimeFormatted: '10:00 AM'
-              },
-              hasActiveBreak: false,
-              activeBreak: null,
-              record: {
-                breaks: [
-                  {
-                    id: 'brk_live_456',
-                    breakTypeId: 'LUNCH',
-                    startedAt: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
-                    endedAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-                    paidDurationSeconds: 1800
-                  }
-                ]
-              },
-              effectiveShift: {
-                id: 'shift_reg',
-                code: 'REGULAR_DAY',
-                name: 'Regular Day Shift (09:00 - 18:00)',
-                startTime: '09:00',
-                endTime: '18:00',
-                timeRangeDisplay: '09:00 AM to 06:00 PM'
-              }
-            }
-          })
-        });
-        return;
-      } else if (interceptedMode === 'CHECKED_OUT') {
-        req.respond({
-          status: 200,
-          contentType: 'application/json',
-          headers: corsHeaders,
-          body: JSON.stringify({
-            success: true,
-            data: {
-              date: '2026-11-24',
-              dateFormatted: '24-11-2026',
-              dateDisplay: '24 Nov 2026',
-              hasActiveSession: false,
-              activeSession: null,
-              hasActiveBreak: false,
-              activeBreak: null,
-              record: {
-                status: 'COMPLETED',
-                netWorkingDurationSeconds: 28800,
-                sessions: [
-                  {
-                    id: 'sess_live_123',
-                    checkInAt: '2026-11-24T03:30:00.000Z',
-                    checkOutAt: '2026-11-24T12:00:00.000Z',
-                    durationSeconds: 28800,
-                    status: 'COMPLETED'
-                  }
-                ]
-              },
-              effectiveShift: {
-                id: 'shift_reg',
-                code: 'REGULAR_DAY',
-                name: 'Regular Day Shift (09:00 - 18:00)',
-                startTime: '09:00',
-                endTime: '18:00',
-                timeRangeDisplay: '09:00 AM to 06:00 PM'
-              }
-            }
-          })
-        });
-        return;
-      }
-    }
-    req.continue();
+  // 2. Real Check In (Real backend API call)
+  console.log('-> Calling real POST /api/attendance/check-in...');
+  const checkInRes = await fetch(`${BACKEND_URL}/api/attendance/check-in`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${employeeSession.accessToken}`,
+    },
+    body: JSON.stringify({}),
   });
+  console.log(`   Check-in status: ${checkInRes.status}`);
 
-  // 2. Checked In Working (Active session with live timer)
-  interceptedMode = 'WORKING';
-  await setSession(employeeSession);
-  await page.goto(`${FRONTEND_URL}/attendance/team`, { waitUntil: 'networkidle2' });
-  await page.goto(`${FRONTEND_URL}/attendance/my?m=working`, { waitUntil: 'networkidle2' });
-  await new Promise((r) => setTimeout(r, 1200));
+  await page.goto(`${FRONTEND_URL}/attendance/my`, { waitUntil: 'networkidle2' });
+  await new Promise((r) => setTimeout(r, 4000)); // allow live timer to tick
   await saveScreenshot('proof_a1_2_checked_in_working.png', vpDesktop);
 
-  // 3. After Refresh (Timer persists from server timestamp)
-  interceptedMode = 'REFRESHED';
+  // 3. After Refresh (Timer persists and increments)
+  console.log('-> Refreshing page to verify timer persistence...');
   await page.reload({ waitUntil: 'networkidle2' });
-  await new Promise((r) => setTimeout(r, 1200));
+  await new Promise((r) => setTimeout(r, 3000)); // allow timer to continue
   await saveScreenshot('proof_a1_3_refreshed_timer_persists.png', vpDesktop);
 
-  interceptedMode = 'BREAK';
-  await page.goto(`${FRONTEND_URL}/attendance/team`, { waitUntil: 'networkidle2' });
-  await page.goto(`${FRONTEND_URL}/attendance/my?m=break`, { waitUntil: 'networkidle2' });
-  await new Promise((r) => setTimeout(r, 1200));
+  // 4. Real Start Break
+  console.log('-> Calling real POST /api/attendance/breaks/start...');
+  const breakStartRes = await fetch(`${BACKEND_URL}/api/attendance/breaks/start`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${employeeSession.accessToken}`,
+    },
+    body: JSON.stringify({ breakTypeId: 'TEA' }),
+  });
+  console.log(`   Start break status: ${breakStartRes.status}`);
+
+  await page.goto(`${FRONTEND_URL}/attendance/my`, { waitUntil: 'networkidle2' });
+  await new Promise((r) => setTimeout(r, 2000));
   await saveScreenshot('proof_a1_4_on_break.png', vpDesktop);
 
-  // 5. Break Ended State
-  interceptedMode = 'BREAK_ENDED';
-  await page.goto(`${FRONTEND_URL}/attendance/team`, { waitUntil: 'networkidle2' });
-  await page.goto(`${FRONTEND_URL}/attendance/my?m=ended`, { waitUntil: 'networkidle2' });
-  await new Promise((r) => setTimeout(r, 1200));
+  // 5. Real End Break
+  console.log('-> Calling real POST /api/attendance/breaks/end...');
+  const breakEndRes = await fetch(`${BACKEND_URL}/api/attendance/breaks/end`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${employeeSession.accessToken}`,
+    },
+    body: JSON.stringify({ remarks: 'Break completed' }),
+  });
+  console.log(`   End break status: ${breakEndRes.status}`);
+
+  await page.goto(`${FRONTEND_URL}/attendance/my`, { waitUntil: 'networkidle2' });
+  await new Promise((r) => setTimeout(r, 2000));
   await saveScreenshot('proof_a1_5_break_ended.png', vpDesktop);
 
-  // 6. Checked Out State
-  interceptedMode = 'CHECKED_OUT';
-  await page.goto(`${FRONTEND_URL}/attendance/team`, { waitUntil: 'networkidle2' });
-  await page.goto(`${FRONTEND_URL}/attendance/my?m=out`, { waitUntil: 'networkidle2' });
-  await new Promise((r) => setTimeout(r, 1200));
+  // 6. Real Check Out
+  console.log('-> Calling real POST /api/attendance/check-out...');
+  const checkOutRes = await fetch(`${BACKEND_URL}/api/attendance/check-out`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${employeeSession.accessToken}`,
+    },
+    body: JSON.stringify({ remarks: 'Shift concluded' }),
+  });
+  console.log(`   Check-out status: ${checkOutRes.status}`);
+
+  await page.goto(`${FRONTEND_URL}/attendance/my`, { waitUntil: 'networkidle2' });
+  await new Promise((r) => setTimeout(r, 2000));
   await saveScreenshot('proof_a1_6_checked_out.png', vpDesktop);
 
-  // Passthrough mode for upcoming filter
-  interceptedMode = 'PASSTHROUGH';
-
   // 7. Upcoming Filter State on Team Attendance
+  console.log('-> Capturing Team Attendance with Upcoming Filter...');
+  await setSession(adminSession);
   await page.goto(`${FRONTEND_URL}/attendance/team`, { waitUntil: 'networkidle2' });
   await page.evaluate(() => {
     const selects = Array.from(document.querySelectorAll('select'));
     if (selects.length > 0) {
-      selects[0].value = 'INACTIVE';
+      selects[0].value = 'UPCOMING';
       selects[0].dispatchEvent(new Event('change', { bubbles: true }));
     }
   });
+  await new Promise((r) => setTimeout(r, 2000));
   await saveScreenshot('proof_a2_upcoming_filter.png', vpDesktop);
 
   await browser.close();

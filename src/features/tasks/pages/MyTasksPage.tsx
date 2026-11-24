@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ListPage } from '@/components/templates/ListPage';
@@ -81,7 +82,7 @@ export const MyTasksPage: React.FC = () => {
       setTasks(res.items);
       setTotal(res.total);
     } catch (err: unknown) {
-      setError((err as Error).message || 'Failed to fetch personal tasks');
+      setError(getErrorMessage(err, 'Failed to fetch personal tasks'));
     } finally {
       setIsLoading(false);
     }
@@ -109,7 +110,7 @@ export const MyTasksPage: React.FC = () => {
       await fetchTimerAndSummary();
       fetchMyTasks();
     } catch (err: unknown) {
-      toast.danger((err as Error).message || 'Failed to start timer');
+      toast.danger(getErrorMessage(err, 'Failed to start timer'));
     }
   };
 
@@ -142,7 +143,7 @@ export const MyTasksPage: React.FC = () => {
       await fetchTimerAndSummary();
       fetchMyTasks();
     } catch (err: unknown) {
-      setModalError((err as Error).message || 'Failed to pause timer.');
+      setModalError(getErrorMessage(err, 'Failed to pause timer.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -157,7 +158,7 @@ export const MyTasksPage: React.FC = () => {
       await fetchTimerAndSummary();
       fetchMyTasks();
     } catch (err: unknown) {
-      toast.danger((err as Error).message || 'Failed to resume timer');
+      toast.danger(getErrorMessage(err, 'Failed to resume timer'));
     }
   };
 
@@ -183,7 +184,7 @@ export const MyTasksPage: React.FC = () => {
       await fetchTimerAndSummary();
       fetchMyTasks();
     } catch (err: unknown) {
-      setModalError((err as Error).message || 'Failed to stop timer.');
+      setModalError(getErrorMessage(err, 'Failed to stop timer.'));
     } finally {
       setIsSubmitting(false);
     }

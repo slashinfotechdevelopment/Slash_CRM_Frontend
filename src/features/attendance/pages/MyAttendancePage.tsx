@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ListPage } from '@/components/templates/ListPage';
 import { useInfiniteList } from '@/hooks/useInfiniteList';
@@ -141,7 +142,7 @@ export const MyAttendancePage: React.FC = () => {
       await fetchTodayStatus();
       refetchHistory();
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Unable to record check-in.';
+      const message = err instanceof Error ? getErrorMessage(err) : 'Unable to record check-in.';
       toast.danger('Check-in Failed', message);
       if (message.toLowerCase().includes('active')) {
         await fetchTodayStatus();
@@ -165,7 +166,7 @@ export const MyAttendancePage: React.FC = () => {
       await fetchTodayStatus();
       refetchHistory();
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Unable to complete check-out.';
+      const message = err instanceof Error ? getErrorMessage(err) : 'Unable to complete check-out.';
       toast.danger('Check-out Failed', message);
     } finally {
       setIsSubmitting(false);
@@ -185,7 +186,7 @@ export const MyAttendancePage: React.FC = () => {
       setBreakRemarks('');
       await fetchTodayStatus();
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to start break.';
+      const message = err instanceof Error ? getErrorMessage(err) : 'Failed to start break.';
       toast.danger('Action Failed', message);
     } finally {
       setIsSubmitting(false);
@@ -199,7 +200,7 @@ export const MyAttendancePage: React.FC = () => {
       toast.success('Break Concluded', 'Welcome back to work.');
       await fetchTodayStatus();
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to end break.';
+      const message = err instanceof Error ? getErrorMessage(err) : 'Failed to end break.';
       toast.danger('Action Failed', message);
     } finally {
       setIsSubmitting(false);
@@ -243,6 +244,7 @@ export const MyAttendancePage: React.FC = () => {
               { value: 'ALL', label: 'All Records (Full Ledger)' },
             ],
             value: dateScope,
+            className: 'w-full sm:w-60',
           },
           {
             key: 'status',
@@ -258,6 +260,7 @@ export const MyAttendancePage: React.FC = () => {
               { value: 'PENDING_RECONCILIATION', label: 'Pending Reconciliation' },
             ],
             value: statusFilter,
+            className: 'w-full sm:w-56',
           },
         ]}
         onFilterChange={handleFilterChange}

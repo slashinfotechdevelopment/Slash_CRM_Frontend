@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Tabs, TabItem } from '@/components/ui/Tabs';
 import { Input } from '@/components/ui/Input';
@@ -68,7 +69,7 @@ export const TaskReportsPage: React.FC = () => {
         setReviewsReport(res);
       }
     } catch (err: unknown) {
-      setError((err as Error).message || 'Failed to fetch task reports');
+      setError(getErrorMessage(err, 'Failed to fetch task reports'));
     } finally {
       setIsLoading(false);
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { Select } from '@/components/ui/Select';
 import {
   UserDetail,
   EffectivePermissionsResponse,
@@ -162,18 +163,17 @@ export const UserPermissionsTab: React.FC<UserPermissionsTabProps> = ({
             />
           </div>
 
-          <select
-            value={permModuleFilter}
-            onChange={(e) => onPermModuleFilterChange(e.target.value)}
-            className="w-full sm:w-48 px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-primary"
-          >
-            <option value="">All Modules ({modulesList.length})</option>
-            {modulesList.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
-          </select>
+          <div className="w-full sm:w-48">
+            <Select
+              value={permModuleFilter}
+              onChange={(e) => onPermModuleFilterChange(e.target.value)}
+              placeholder={`All Modules (${modulesList.length})`}
+              options={[
+                { value: '', label: `All Modules (${modulesList.length})` },
+                ...modulesList.map((m) => ({ value: m, label: m })),
+              ]}
+            />
+          </div>
 
           <span className="text-xs text-slate-500 sm:ml-auto">
             Showing {filteredPermissions.length} of {effectivePermsData?.permissions?.length || 0}

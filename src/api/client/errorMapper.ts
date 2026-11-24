@@ -155,3 +155,29 @@ export function normalizeError(error: unknown): NormalizedError {
     fieldErrors: Object.keys(fieldErrors).length > 0 ? fieldErrors : undefined,
   };
 }
+
+/**
+ * Safely extracts a human-readable error message from an unknown catch error
+ */
+export function getErrorMessage(err: unknown, fallback = 'An unexpected error occurred. Please try again.'): string {
+  if (!err) return fallback;
+  if (typeof err === 'string') return cleanMessage(err);
+  if (err instanceof Error) return cleanMessage(err.message);
+  if (typeof err === 'object') {
+    const obj = err as Record<string, unknown>;
+    if (typeof obj.message === 'string' && obj.message) {
+      return cleanMessage(obj.message);
+    }
+    if (Array.isArray(obj.message) && obj.message.length > 0) {
+      return obj.message.map((m) => cleanMessage(String(m))).join(' • ');
+    }
+    if (Array.isArray(obj.errors) && obj.errors.length > 0) {
+      return obj.errors.map((m) => cleanMessage(String(m))).join(' • ');
+    }
+    if (typeof obj.error === 'string' && obj.error) {
+      return cleanMessage(obj.error);
+    }
+  }
+  return fallback;
+}
+

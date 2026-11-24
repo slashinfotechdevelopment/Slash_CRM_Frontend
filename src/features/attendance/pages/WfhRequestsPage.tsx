@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState } from 'react';
 import { ListPage } from '@/components/templates/ListPage';
 import { Button } from '@/components/ui/Button';
@@ -89,7 +90,7 @@ export const WfhRequestsPage: React.FC = () => {
       setReason('');
       refetchMy();
     } catch (err) {
-      toast.danger('Submission Failed', err instanceof Error ? err.message : 'Could not submit WFH request.');
+      toast.danger('Submission Failed', err instanceof Error ? getErrorMessage(err) : 'Could not submit WFH request.');
     } finally {
       setIsSubmitting(false);
     }
@@ -110,7 +111,7 @@ export const WfhRequestsPage: React.FC = () => {
       toast.success('Cancelled', 'WFH request cancelled successfully.');
       refetchMy();
     } catch (err) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Unable to cancel request.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Unable to cancel request.');
     }
   };
 
@@ -129,7 +130,7 @@ export const WfhRequestsPage: React.FC = () => {
       toast.success('Approved', 'WFH request approved successfully.');
       refetchTeam();
     } catch (err) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Could not approve request.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Could not approve request.');
     }
   };
 
@@ -152,7 +153,7 @@ export const WfhRequestsPage: React.FC = () => {
       setIsRejectModalOpen(false);
       refetchTeam();
     } catch (err) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Could not reject request.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Could not reject request.');
     } finally {
       setIsRejecting(false);
     }

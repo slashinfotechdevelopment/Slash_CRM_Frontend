@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -59,7 +60,7 @@ export const LoginPage: React.FC = () => {
       setStep('OTP');
       setCountdown(res.expiresInSeconds || 60);
     } catch (err) {
-      setErrorMessage(err.message || 'Failed to send OTP. Please verify your email.');
+      setErrorMessage(getErrorMessage(err, 'Failed to send OTP. Please verify your email.'));
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +86,7 @@ export const LoginPage: React.FC = () => {
       toast.success('Signed in successfully! Redirecting...');
       navigate('/dashboard', { replace: true });
     } catch (err) {
-      setErrorMessage(err.message || 'Invalid or expired passcode. Please try again.');
+      setErrorMessage(getErrorMessage(err, 'Invalid or expired passcode. Please try again.'));
     } finally {
       setIsLoading(false);
     }

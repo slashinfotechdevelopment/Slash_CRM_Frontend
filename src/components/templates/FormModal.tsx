@@ -66,7 +66,7 @@ export const FormModal: React.FC<FormModalProps> = ({
       <div
         className={cn(
           'w-full bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all',
-          'max-h-[92vh] flex flex-col',
+          'max-h-[96vh] min-h-[420px] flex flex-col',
           maxWidths[maxWidth]
         )}
       >

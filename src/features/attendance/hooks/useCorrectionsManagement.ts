@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import { useState } from 'react';
 import { useToast } from '@/hooks/useToast';
 import { useConfirm } from '@/hooks/useConfirm';
@@ -75,7 +76,7 @@ export const useCorrectionsManagement = (
       setEvidenceRef('');
       onRefreshMy();
     } catch (err: unknown) {
-      toast.danger('Submission Failed', err instanceof Error ? err.message : 'Could not submit correction request.');
+      toast.danger('Submission Failed', err instanceof Error ? getErrorMessage(err) : 'Could not submit correction request.');
     } finally {
       setIsSubmitting(false);
     }
@@ -89,7 +90,7 @@ export const useCorrectionsManagement = (
       const details = await attendanceConnector.getCorrectionRequestById(req.id);
       setSelectedCorrection(details);
     } catch (err: unknown) {
-      toast.danger('Error', err instanceof Error ? err.message : 'Failed to fetch correction details.');
+      toast.danger('Error', err instanceof Error ? getErrorMessage(err) : 'Failed to fetch correction details.');
     } finally {
       setLoadingDetail(false);
     }
@@ -110,7 +111,7 @@ export const useCorrectionsManagement = (
       toast.success('Cancelled', 'Correction request cancelled.');
       onRefreshMy();
     } catch (err: unknown) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Unable to cancel request.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Unable to cancel request.');
     }
   };
 
@@ -137,7 +138,7 @@ export const useCorrectionsManagement = (
       setIsApproveOpen(false);
       onRefreshTeam();
     } catch (err: unknown) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Could not approve correction request.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Could not approve correction request.');
     } finally {
       setIsApproving(false);
     }
@@ -162,7 +163,7 @@ export const useCorrectionsManagement = (
       setIsRejectOpen(false);
       onRefreshTeam();
     } catch (err: unknown) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Could not reject correction request.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Could not reject correction request.');
     } finally {
       setIsRejecting(false);
     }

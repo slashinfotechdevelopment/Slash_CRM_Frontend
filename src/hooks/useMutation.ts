@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { NormalizedError } from '@/api/client/errorMapper';
+import { NormalizedError, normalizeError } from '@/api/client/errorMapper';
 
 export interface UseMutationOptions<TData, TVariables> {
   onSuccess?: (data: TData, variables: TVariables) => void | Promise<void>;
@@ -26,10 +26,11 @@ export function useMutation<TData, TVariables = void>(
         await options.onSuccess?.(result, variables);
         return result;
       } catch (err) {
-        setError(err);
+        const norm = normalizeError(err);
+        setError(norm);
         setIsLoading(false);
-        await options.onError?.(err, variables);
-        throw err;
+        await options.onError?.(norm, variables);
+        throw norm;
       }
     },
     [mutationFn, options]

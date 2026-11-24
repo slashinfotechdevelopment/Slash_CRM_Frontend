@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { NormalizedError } from '@/api/client/errorMapper';
+import { NormalizedError, normalizeError } from '@/api/client/errorMapper';
 import { PAGINATION } from '@/config/constants';
 
 export interface InfiniteListOptions<T, F> {
@@ -104,7 +104,7 @@ export function useInfiniteList<T extends { id?: string | number }, F extends ob
         setHasMore(moreAvailable);
         pageRef.current = pageToFetch;
       } catch (err) {
-        setError(err);
+        setError(normalizeError(err));
       } finally {
         isFetchingRef.current = false;
         setIsLoading(false);

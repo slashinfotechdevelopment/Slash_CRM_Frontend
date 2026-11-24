@@ -9,6 +9,7 @@ export interface FilterSelectConfig {
   placeholder?: string;
   options: SelectOption[];
   value?: string | number;
+  className?: string;
 }
 
 export interface FilterBarProps {
@@ -60,7 +61,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         )}
 
         {filters.map((f) => (
-          <div key={f.key} className="w-full sm:w-44">
+          <div key={f.key} className={f.className || 'w-full sm:w-56'}>
             <Select
               options={f.options}
               placeholder={f.placeholder || `All ${f.key}`}

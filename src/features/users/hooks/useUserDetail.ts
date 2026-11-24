@@ -9,10 +9,12 @@ import {
   UpdateUserPayload,
   UpdateUserStatusPayload,
   EffectivePermissionsResponse,
-  UserPermissionOverrideItem,
 } from '@/api/types/users.types';
 import { RoleItem, DepartmentItem, PermissionItem } from '@/api/types/roles.types';
+import { getErrorMessage } from '@/api/client/errorMapper';
 import { UserDetailModalsProps } from '../components/UserDetailModals';
+import { useUserRoleActions } from './useUserRoleActions';
+import { useUserDepartmentPermissionActions } from './useUserDepartmentPermissionActions';
 
 export function useUserDetail(id: string | undefined, navigate: NavigateFunction) {
   const confirm = useConfirm();
@@ -29,39 +31,16 @@ export function useUserDetail(id: string | undefined, navigate: NavigateFunction
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
-  const [isAddRoleModalOpen, setIsAddRoleModalOpen] = useState(false);
-  const [isReplaceRolesModalOpen, setIsReplaceRolesModalOpen] = useState(false);
-  const [isDepartmentsModalOpen, setIsDepartmentsModalOpen] = useState(false);
-  const [isPermissionsModalOpen, setIsPermissionsModalOpen] = useState(false);
 
   const [editForm, setEditForm] = useState<UpdateUserPayload>({ name: '', phone: '', designation: '' });
   const [statusForm, setStatusForm] = useState<UpdateUserStatusPayload>({ status: 'ACTIVE', reason: '' });
-  const [selectedRoleToAdd, setSelectedRoleToAdd] = useState<string>('');
-  const [selectedRolesToReplace, setSelectedRolesToReplace] = useState<string[]>([]);
-  const [deptAssignments, setDeptAssignments] = useState<{ id: string; isPrimary: boolean }[]>([]);
-  const [permOverrides, setPermOverrides] = useState<UserPermissionOverrideItem[]>([]);
-  const [newOverride, setNewOverride] = useState<UserPermissionOverrideItem>({
-    permissionId: '',
-    effect: 'ALLOW',
-    dataScope: 'ALL',
-    reason: '',
-  });
 
   const [activeTab, setActiveTab] = useState<'permissions' | 'departments' | 'profile'>('permissions');
   const [permSearch, setPermSearch] = useState('');
   const [permModuleFilter, setPermModuleFilter] = useState('');
-  const [overridePermSearch, setOverridePermSearch] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-
-  const modalFilteredPerms = useMemo(() => {
-    if (!overridePermSearch.trim()) return availablePermissions;
-    const q = overridePermSearch.toLowerCase();
-    return availablePermissions.filter(
-      (p) => p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q)
-    );
-  }, [availablePermissions, overridePermSearch]);
 
   const fetchUserData = useCallback(async () => {
     if (!id) return;
@@ -89,11 +68,33 @@ export function useUserDetail(id: string | undefined, navigate: NavigateFunction
       if (deptsRes.status === 'fulfilled') setAvailableDepartments(deptsRes.value.items || []);
       if (allPermsRes.status === 'fulfilled') setAvailablePermissions(allPermsRes.value.items || []);
     } catch (err) {
-      setError(err.message || 'Failed to load user details.');
+      setError(getErrorMessage(err, 'Failed to load user details.'));
     } finally {
       setIsLoading(false);
     }
   }, [id]);
+
+  const roleActions = useUserRoleActions(
+    id,
+    user,
+    fetchUserData,
+    setIsSubmitting,
+    setFormError,
+    confirm,
+    toast
+  );
+
+  const deptPermActions = useUserDepartmentPermissionActions(
+    id,
+    user,
+    effectivePermsData,
+    availableDepartments,
+    availablePermissions,
+    fetchUserData,
+    setIsSubmitting,
+    setFormError,
+    toast
+  );
 
   useEffect(() => {
     fetchUserData();
@@ -110,7 +111,7 @@ export function useUserDetail(id: string | undefined, navigate: NavigateFunction
       setIsEditModalOpen(false);
       fetchUserData();
     } catch (err) {
-      setFormError(err.message || 'Failed to update user profile.');
+      setFormError(getErrorMessage(err, 'Failed to update user profile.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -127,7 +128,7 @@ export function useUserDetail(id: string | undefined, navigate: NavigateFunction
       setIsStatusModalOpen(false);
       fetchUserData();
     } catch (err) {
-      setFormError(err.message || 'Failed to update status.');
+      setFormError(getErrorMessage(err, 'Failed to update status.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -152,7 +153,7 @@ export function useUserDetail(id: string | undefined, navigate: NavigateFunction
       toast.success('User deactivated successfully.');
       fetchUserData();
     } catch (err) {
-      toast.danger(err.message || 'Failed to deactivate user.');
+      toast.danger(getErrorMessage(err, 'Failed to deactivate user.'));
     }
   };
 
@@ -163,7 +164,7 @@ export function useUserDetail(id: string | undefined, navigate: NavigateFunction
       toast.success('User account restored successfully.');
       fetchUserData();
     } catch (err) {
-      toast.danger(err.message || 'Failed to restore user.');
+      toast.danger(getErrorMessage(err, 'Failed to restore user.'));
     }
   };
 
@@ -181,174 +182,8 @@ export function useUserDetail(id: string | undefined, navigate: NavigateFunction
       toast.success('User permanently deleted.');
       navigate('/users');
     } catch (err) {
-      toast.danger(err.message || 'Failed to delete user permanently.');
+      toast.danger(getErrorMessage(err, 'Failed to delete user permanently.'));
     }
-  };
-
-  const handleRemoveRole = async (roleId: string, roleName: string) => {
-    if (!id) return;
-    const result = await confirm({
-      title: `Remove Role: ${roleName}?`,
-      message: `Are you sure you want to revoke the role "${roleName}" from this user?`,
-      confirmLabel: 'Revoke Role',
-      tone: 'danger',
-    });
-    if (!result.confirmed) return;
-    try {
-      await usersConnector.removeUserRole(id, roleId);
-      toast.success(`Role ${roleName} removed.`);
-      fetchUserData();
-    } catch (err) {
-      toast.danger(err.message || 'Failed to remove role.');
-    }
-  };
-
-  const handleAddRoleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id || !selectedRoleToAdd) return;
-    setIsSubmitting(true);
-    setFormError(null);
-    try {
-      await usersConnector.addUserRoles(id, { roles: [selectedRoleToAdd] });
-      toast.success('Role added successfully.');
-      setIsAddRoleModalOpen(false);
-      setSelectedRoleToAdd('');
-      fetchUserData();
-    } catch (err) {
-      setFormError(err.message || 'Failed to add role.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleReplaceRolesSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id) return;
-    setIsSubmitting(true);
-    setFormError(null);
-    try {
-      await usersConnector.replaceUserRoles(id, { roles: selectedRolesToReplace });
-      toast.success('User role assignments replaced successfully.');
-      setIsReplaceRolesModalOpen(false);
-      fetchUserData();
-    } catch (err) {
-      setFormError(err.message || 'Failed to replace roles.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const openReplaceRolesModal = () => {
-    setSelectedRolesToReplace(user?.roles?.map((r) => r.id) || []);
-    setFormError(null);
-    setIsReplaceRolesModalOpen(true);
-  };
-
-  const openDepartmentsModal = () => {
-    setDeptAssignments(
-      user?.departments?.map((d) => ({
-        id: d.id,
-        isPrimary: !!d.isPrimary,
-      })) || []
-    );
-    setFormError(null);
-    setIsDepartmentsModalOpen(true);
-  };
-
-  const handleDepartmentsSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id) return;
-    if (deptAssignments.length > 0 && !deptAssignments.some((d) => d.isPrimary)) {
-      setFormError('Exactly one assigned department must be designated as the Primary Department.');
-      return;
-    }
-    setIsSubmitting(true);
-    setFormError(null);
-    try {
-      const payload = {
-        departments: deptAssignments.map((d) => {
-          const match = availableDepartments.find((ad) => ad.id === d.id);
-          return {
-            code: match?.code || '',
-            isPrimary: d.isPrimary,
-          };
-        }),
-      };
-      await usersConnector.replaceUserDepartments(id, payload);
-      toast.success('Department assignments updated.');
-      setIsDepartmentsModalOpen(false);
-      fetchUserData();
-    } catch (err) {
-      setFormError(err.message || 'Failed to update departments.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const openPermissionsModal = () => {
-    const userOverrides = (effectivePermsData?.permissions || []).filter(
-      (p) => p.source === 'USER_OVERRIDE'
-    );
-    setPermOverrides(
-      userOverrides.map((o) => ({
-        code: o.code,
-        effect: o.effect,
-        dataScope: o.dataScope || 'ALL',
-        reason: o.reason || '',
-      }))
-    );
-    setNewOverride({
-      permissionId: '',
-      effect: 'ALLOW',
-      dataScope: 'ALL',
-      reason: '',
-    });
-    setOverridePermSearch('');
-    setFormError(null);
-    setIsPermissionsModalOpen(true);
-  };
-
-  const handlePermissionsSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id) return;
-    setIsSubmitting(true);
-    setFormError(null);
-    try {
-      const cleanPayload = permOverrides.map((o) => ({
-        permissionId: o.permissionId,
-        code: o.code,
-        effect: o.effect,
-        dataScope: o.dataScope,
-        reason: o.reason || undefined,
-      }));
-      await usersConnector.replaceUserPermissions(id, { permissions: cleanPayload });
-      toast.success('Permission overrides updated.');
-      setIsPermissionsModalOpen(false);
-      fetchUserData();
-    } catch (err) {
-      setFormError(err.message || 'Failed to save permission overrides.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleAddOverride = () => {
-    if (!newOverride.permissionId && !newOverride.code) {
-      toast.danger('Please select a permission to override.');
-      return;
-    }
-    const codeOrId = newOverride.code || newOverride.permissionId;
-    if (permOverrides.some((o) => o.code === codeOrId || o.permissionId === codeOrId)) {
-      toast.danger('An override for this permission is already in the list.');
-      return;
-    }
-    setPermOverrides((prev) => [...prev, { ...newOverride }]);
-    setNewOverride({
-      permissionId: '',
-      effect: 'ALLOW',
-      dataScope: 'ALL',
-      reason: '',
-    });
   };
 
   // Modules list & filtered permissions
@@ -386,35 +221,35 @@ export function useUserDetail(id: string | undefined, navigate: NavigateFunction
     statusForm,
     setStatusForm,
     onStatusSubmit: handleStatusSubmit,
-    isAddRoleModalOpen,
-    onCloseAddRole: () => !isSubmitting && setIsAddRoleModalOpen(false),
-    selectedRoleToAdd,
-    setSelectedRoleToAdd,
+    isAddRoleModalOpen: roleActions.isAddRoleModalOpen,
+    onCloseAddRole: () => !isSubmitting && roleActions.setIsAddRoleModalOpen(false),
+    selectedRoleToAdd: roleActions.selectedRoleToAdd,
+    setSelectedRoleToAdd: roleActions.setSelectedRoleToAdd,
     availableRoles,
-    onAddRoleSubmit: handleAddRoleSubmit,
-    isReplaceRolesModalOpen,
-    onCloseReplaceRoles: () => !isSubmitting && setIsReplaceRolesModalOpen(false),
-    selectedRolesToReplace,
-    setSelectedRolesToReplace,
-    onReplaceRolesSubmit: handleReplaceRolesSubmit,
-    isDepartmentsModalOpen,
-    onCloseDepartments: () => !isSubmitting && setIsDepartmentsModalOpen(false),
-    deptAssignments,
-    setDeptAssignments,
+    onAddRoleSubmit: roleActions.handleAddRoleSubmit,
+    isReplaceRolesModalOpen: roleActions.isReplaceRolesModalOpen,
+    onCloseReplaceRoles: () => !isSubmitting && roleActions.setIsReplaceRolesModalOpen(false),
+    selectedRolesToReplace: roleActions.selectedRolesToReplace,
+    setSelectedRolesToReplace: roleActions.setSelectedRolesToReplace,
+    onReplaceRolesSubmit: roleActions.handleReplaceRolesSubmit,
+    isDepartmentsModalOpen: deptPermActions.isDepartmentsModalOpen,
+    onCloseDepartments: () => !isSubmitting && deptPermActions.setIsDepartmentsModalOpen(false),
+    deptAssignments: deptPermActions.deptAssignments,
+    setDeptAssignments: deptPermActions.setDeptAssignments,
     availableDepartments,
-    onDepartmentsSubmit: handleDepartmentsSubmit,
-    isPermissionsModalOpen,
-    onClosePermissions: () => !isSubmitting && setIsPermissionsModalOpen(false),
-    permOverrides,
-    setPermOverrides,
-    newOverride,
-    setNewOverride,
+    onDepartmentsSubmit: deptPermActions.handleDepartmentsSubmit,
+    isPermissionsModalOpen: deptPermActions.isPermissionsModalOpen,
+    onClosePermissions: () => !isSubmitting && deptPermActions.setIsPermissionsModalOpen(false),
+    permOverrides: deptPermActions.permOverrides,
+    setPermOverrides: deptPermActions.setPermOverrides,
+    newOverride: deptPermActions.newOverride,
+    setNewOverride: deptPermActions.setNewOverride,
     availablePermissions,
-    modalFilteredPerms,
-    overridePermSearch,
-    setOverridePermSearch,
-    onPermissionsSubmit: handlePermissionsSubmit,
-    onAddOverride: handleAddOverride,
+    modalFilteredPerms: deptPermActions.modalFilteredPerms,
+    overridePermSearch: deptPermActions.overridePermSearch,
+    setOverridePermSearch: deptPermActions.setOverridePermSearch,
+    onPermissionsSubmit: deptPermActions.handlePermissionsSubmit,
+    onAddOverride: deptPermActions.handleAddOverride,
   };
 
   return {
@@ -432,15 +267,15 @@ export function useUserDetail(id: string | undefined, navigate: NavigateFunction
     modulesList,
     filteredPermissions,
     modalsProps,
-    openReplaceRolesModal,
-    openDepartmentsModal,
-    openPermissionsModal,
+    openReplaceRolesModal: roleActions.openReplaceRolesModal,
+    openDepartmentsModal: deptPermActions.openDepartmentsModal,
+    openPermissionsModal: deptPermActions.openPermissionsModal,
     setIsEditModalOpen,
     setIsStatusModalOpen,
-    setIsAddRoleModalOpen,
+    setIsAddRoleModalOpen: roleActions.setIsAddRoleModalOpen,
     handleSoftDelete,
     handleRestoreUser,
     handlePermanentDelete,
-    handleRemoveRole,
+    handleRemoveRole: roleActions.handleRemoveRole,
   };
 }

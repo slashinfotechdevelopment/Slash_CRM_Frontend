@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { leaveConnector } from '@/connectors/leave.connector';
 import {
@@ -158,7 +159,7 @@ export const MyLeavePage: React.FC = () => {
       });
       await Promise.all([loadInitialData(), loadRequests()]);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to submit leave request.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to submit leave request.';
       setApplyError(msg);
     } finally {
       setIsApplying(false);
@@ -191,7 +192,7 @@ export const MyLeavePage: React.FC = () => {
       setCancelReason('');
       await Promise.all([loadInitialData(), loadRequests()]);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to cancel leave request.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to cancel leave request.';
       setCancelError(msg);
     } finally {
       setIsCancelling(false);

@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect, useCallback } from 'react';
 import { leaveConnector } from '@/connectors/leave.connector';
 import {
@@ -122,7 +123,7 @@ export const LeaveSetupPage: React.FC = () => {
       await loadLeaveTypes();
       handleSelectType(created);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to create leave type.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to create leave type.';
       setCreateError(msg);
     } finally {
       setIsSubmittingCreate(false);
@@ -153,7 +154,7 @@ export const LeaveSetupPage: React.FC = () => {
         setSelectedType(refreshed);
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to update leave type.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to update leave type.';
       setEditError(msg);
     } finally {
       setIsSubmittingEdit(false);
@@ -177,7 +178,7 @@ export const LeaveSetupPage: React.FC = () => {
       setIsVersionModalOpen(false);
       await handleSelectType(selectedType);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to create policy version.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to create policy version.';
       setVersionError(msg);
     } finally {
       setIsSubmittingVersion(false);

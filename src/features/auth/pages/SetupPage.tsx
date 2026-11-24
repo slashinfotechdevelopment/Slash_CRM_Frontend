@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -48,7 +49,7 @@ export const SetupPage: React.FC = () => {
       navigate('/dashboard', { replace: true });
     } catch (err) {
       setErrorMessage(
-        err.message || 'System has already been bootstrapped or cannot be initialized at this time.'
+        getErrorMessage(err, 'System has already been bootstrapped or cannot be initialized at this time.')
       );
     } finally {
       setIsLoading(false);

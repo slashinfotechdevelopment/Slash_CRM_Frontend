@@ -6,7 +6,7 @@
     "path": "/api/auth/me",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 11,
+    "durationMs": 18,
     "expectedKeys": [
       "id",
       "userCode",
@@ -44,7 +44,7 @@
     "path": "/api/roles",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 7,
+    "durationMs": 13,
     "expectedKeys": [
       "id",
       "code",
@@ -73,7 +73,7 @@
     "path": "/api/roles/cmw0k4peb0005s4uz1cwxfxbu",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 12,
+    "durationMs": 28,
     "expectedKeys": [
       "id",
       "code",
@@ -103,7 +103,7 @@
     "path": "/api/roles/cmw0k4peb0005s4uz1cwxfxbu/permissions",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 19,
+    "durationMs": 37,
     "expectedKeys": [
       "permissionId",
       "code",
@@ -129,7 +129,7 @@
     "path": "/api/permissions",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 5,
+    "durationMs": 9,
     "expectedKeys": [
       "id",
       "code",
@@ -157,7 +157,7 @@
     "path": "/api/permissions/modules",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 11,
+    "durationMs": 14,
     "expectedKeys": [],
     "actualKeys": [
       "activity_logs",
@@ -197,7 +197,7 @@
     "path": "/api/departments",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 6,
+    "durationMs": 10,
     "expectedKeys": [
       "id",
       "code",
@@ -228,7 +228,7 @@
     "path": "/api/users",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 14,
+    "durationMs": 13,
     "expectedKeys": [
       "id",
       "userCode",
@@ -263,7 +263,7 @@
     "path": "/api/users/me",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 18,
+    "durationMs": 30,
     "expectedKeys": [
       "id",
       "userCode",
@@ -300,7 +300,7 @@
     "path": "/api/users/cmwdjeqll001t78uzuyvkjgpo",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 18,
+    "durationMs": 27,
     "expectedKeys": [
       "id",
       "userCode",
@@ -337,7 +337,7 @@
     "path": "/api/users/cmwdjeqll001t78uzuyvkjgpo/permissions",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 15,
+    "durationMs": 21,
     "expectedKeys": [
       "userId",
       "userCode",
@@ -360,7 +360,7 @@
     "path": "/api/attendance/today",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 17,
+    "durationMs": 34,
     "expectedKeys": [
       "hasActiveSession",
       "activeSession",
@@ -390,7 +390,7 @@
     "path": "/api/attendance/history",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 18,
+    "durationMs": 26,
     "expectedKeys": [
       "id",
       "userId",
@@ -448,7 +448,7 @@
     "path": "/api/attendance/shifts",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 5,
+    "durationMs": 7,
     "expectedKeys": [
       "id",
       "code",
@@ -488,7 +488,7 @@
     "path": "/api/attendance/shifts/my-assignments",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 5,
+    "durationMs": 10,
     "expectedKeys": [
       "id",
       "userId"
@@ -527,7 +527,7 @@
     "path": "/api/attendance/shifts/assignments/cmwdjeqll001t78uzuyvkjgpo",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 5,
+    "durationMs": 7,
     "expectedKeys": [
       "id",
       "userId"
@@ -566,7 +566,7 @@
     "path": "/api/attendance/shifts/effective/cmwdjeqll001t78uzuyvkjgpo",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 5,
+    "durationMs": 9,
     "expectedKeys": [
       "id",
       "userId"
@@ -605,7 +605,7 @@
     "path": "/api/attendance/wfh/my-requests",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 6,
+    "durationMs": 9,
     "expectedKeys": [
       "id",
       "userId",
@@ -657,7 +657,7 @@
     "path": "/api/attendance/wfh",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 10,
+    "durationMs": 12,
     "expectedKeys": [
       "id",
       "userId",
@@ -711,7 +711,7 @@
     "path": "/api/attendance/overtime/my-requests",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 9,
+    "durationMs": 10,
     "expectedKeys": [
       "id",
       "userId",
@@ -728,7 +728,7 @@
     "path": "/api/attendance/overtime",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 12,
+    "durationMs": 16,
     "expectedKeys": [
       "id",
       "userId",
@@ -795,7 +795,7 @@
     "path": "/api/attendance/corrections/my-requests",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 6,
+    "durationMs": 14,
     "expectedKeys": [
       "id",
       "userId",
@@ -813,7 +813,7 @@
     "path": "/api/attendance/corrections",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 7,
+    "durationMs": 23,
     "expectedKeys": [
       "id",
       "userId",
@@ -855,7 +855,7 @@
     "path": "/api/attendance/anomalies",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 12,
+    "durationMs": 21,
     "expectedKeys": [
       "id",
       "userId",
@@ -910,7 +910,7 @@
     "path": "/api/attendance/reconciliation/runs",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 8,
+    "durationMs": 11,
     "expectedKeys": [
       "id",
       "status"
@@ -926,7 +926,7 @@
     "path": "/api/attendance/reconciliation/status",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 9,
+    "durationMs": 13,
     "expectedKeys": [
       "status"
     ],
@@ -956,7 +956,7 @@
     "path": "/api/tasks",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 10,
+    "durationMs": 16,
     "expectedKeys": [
       "id",
       "taskCode",
@@ -1002,7 +1002,7 @@
     "path": "/api/tasks/my-tasks",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 8,
+    "durationMs": 13,
     "expectedKeys": [
       "id",
       "taskCode",
@@ -1048,7 +1048,7 @@
     "path": "/api/tasks/tags",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 4,
+    "durationMs": 8,
     "expectedKeys": [
       "id",
       "name",
@@ -1071,7 +1071,7 @@
     "path": "/api/tasks/timer/active",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 7,
+    "durationMs": 20,
     "expectedKeys": [
       "hasActiveTimer"
     ],
@@ -1093,7 +1093,7 @@
     "path": "/api/tasks/my-time-summary",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 8,
+    "durationMs": 23,
     "expectedKeys": [
       "userId"
     ],
@@ -1118,7 +1118,7 @@
     "path": "/api/tasks/dashboard/my",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 18,
+    "durationMs": 49,
     "expectedKeys": [
       "statusCounts"
     ],
@@ -1142,7 +1142,7 @@
     "path": "/api/tasks/dashboard/team",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 19,
+    "durationMs": 40,
     "expectedKeys": [
       "statusCounts"
     ],
@@ -1168,7 +1168,7 @@
     "path": "/api/tasks/dashboard/organization",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 18,
+    "durationMs": 34,
     "expectedKeys": [
       "totalTasks"
     ],
@@ -1191,7 +1191,7 @@
     "path": "/api/tasks/reports/summary",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 11,
+    "durationMs": 12,
     "expectedKeys": [
       "totalTasks",
       "completedTasks"
@@ -1215,7 +1215,7 @@
     "path": "/api/tasks/reports/working-hours",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 18,
+    "durationMs": 24,
     "expectedKeys": [],
     "actualKeys": [
       "employee",
@@ -1239,7 +1239,7 @@
     "path": "/api/tasks/reports/employee-performance",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 117,
+    "durationMs": 166,
     "expectedKeys": [],
     "actualKeys": [
       "employee",
@@ -1261,7 +1261,7 @@
     "path": "/api/tasks/reports/overdue",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 11,
+    "durationMs": 15,
     "expectedKeys": [],
     "actualKeys": [
       "id",
@@ -1285,7 +1285,7 @@
     "path": "/api/tasks/reports/reviews",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 13,
+    "durationMs": 17,
     "expectedKeys": [
       "totalReviews",
       "awaitingReviewCount"
@@ -1309,7 +1309,7 @@
     "path": "/api/leads",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 7,
+    "durationMs": 11,
     "expectedKeys": [
       "id",
       "leadCode",
@@ -1383,7 +1383,7 @@
     "path": "/api/leads/pipeline/stages",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 5,
+    "durationMs": 11,
     "expectedKeys": [
       "id",
       "code",
@@ -1412,7 +1412,7 @@
     "path": "/api/leads/metrics/summary",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 7,
+    "durationMs": 18,
     "expectedKeys": [
       "totalActive",
       "conversionRate"
@@ -1434,7 +1434,7 @@
     "path": "/api/leads/metrics/pipeline",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 13,
+    "durationMs": 14,
     "expectedKeys": [],
     "actualKeys": [
       "stageId",
@@ -1454,7 +1454,7 @@
     "path": "/api/leads/follow-ups/my",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 10,
+    "durationMs": 15,
     "expectedKeys": [
       "id",
       "scheduledAt",
@@ -1485,7 +1485,7 @@
     "path": "/api/leads/cmwlo4fgl0003q0uzwt2ssa9k",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 9,
+    "durationMs": 12,
     "expectedKeys": [
       "id",
       "leadCode",
@@ -1561,7 +1561,7 @@
     "path": "/api/leads/cmwlo4fgl0003q0uzwt2ssa9k/timeline",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 11,
+    "durationMs": 12,
     "expectedKeys": [
       "activities"
     ],
@@ -1580,7 +1580,7 @@
     "path": "/api/leave/types",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 7,
+    "durationMs": 10,
     "expectedKeys": [
       "id",
       "code",
@@ -1610,7 +1610,7 @@
     "path": "/api/leave/types/cmwgbgx4400063suz7k0ywlfe",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 9,
+    "durationMs": 11,
     "expectedKeys": [
       "id",
       "code",
@@ -1639,7 +1639,7 @@
     "path": "/api/leave/holidays",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 8,
+    "durationMs": 12,
     "expectedKeys": [
       "id",
       "name",
@@ -1675,7 +1675,7 @@
     "path": "/api/leave/weekly-off-policies",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 7,
+    "durationMs": 13,
     "expectedKeys": [
       "id",
       "name"
@@ -1710,7 +1710,7 @@
     "path": "/api/leave/balances/my",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 7,
+    "durationMs": 9,
     "expectedKeys": [
       "id",
       "userId",
@@ -1743,7 +1743,7 @@
     "path": "/api/leave/requests/my",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 9,
+    "durationMs": 11,
     "expectedKeys": [
       "id",
       "leaveTypeId",
@@ -1791,7 +1791,7 @@
     "path": "/api/leave/requests",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 11,
+    "durationMs": 13,
     "expectedKeys": [
       "id",
       "userId",
@@ -1840,7 +1840,7 @@
     "path": "/api/leave/requests/cmwlq1i3k000478uzhgbrdtuo",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 11,
+    "durationMs": 14,
     "expectedKeys": [
       "id",
       "userId",
@@ -1892,7 +1892,7 @@
     "path": "/api/leave/balances",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 16,
+    "durationMs": 17,
     "expectedKeys": [
       "userId",
       "leaveTypeId"
@@ -1923,7 +1923,7 @@
     "path": "/api/leave/transactions",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 7,
+    "durationMs": 11,
     "expectedKeys": [
       "id",
       "userId",
@@ -1967,7 +1967,7 @@
     "path": "/api/leave/calendar",
     "superAdminStatus": 200,
     "employeeStatus": 200,
-    "durationMs": 6,
+    "durationMs": 11,
     "expectedKeys": [
       "date"
     ],
@@ -1982,7 +1982,7 @@
     "path": "/api/leave/reports/summary",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 14,
+    "durationMs": 18,
     "expectedKeys": [
       "year",
       "departments"
@@ -2013,7 +2013,7 @@
     "path": "/api/admin/employees/activity",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 21,
+    "durationMs": 31,
     "expectedKeys": [
       "employeeId",
       "employeeName",
@@ -2043,7 +2043,7 @@
     "path": "/api/admin/tasks/summary",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 10,
+    "durationMs": 15,
     "expectedKeys": [
       "summary",
       "totalEmployees"
@@ -2063,7 +2063,7 @@
     "path": "/api/admin/leads/summary",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 6,
+    "durationMs": 11,
     "expectedKeys": [
       "newLeads",
       "convertedLeads",
@@ -2088,7 +2088,7 @@
     "path": "/api/admin/leads/by-employee",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 12,
+    "durationMs": 9,
     "expectedKeys": [
       "employees"
     ],
@@ -2103,7 +2103,7 @@
     "path": "/api/admin/leads/trend",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 10,
+    "durationMs": 8,
     "expectedKeys": [
       "trend"
     ],
@@ -2122,7 +2122,7 @@
     "path": "/api/admin/leads/by-source",
     "superAdminStatus": 200,
     "employeeStatus": 403,
-    "durationMs": 9,
+    "durationMs": 8,
     "expectedKeys": [
       "source",
       "count"

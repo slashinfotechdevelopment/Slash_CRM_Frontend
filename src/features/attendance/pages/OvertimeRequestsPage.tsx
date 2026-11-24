@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState } from 'react';
 import { ListPage } from '@/components/templates/ListPage';
 import { Button } from '@/components/ui/Button';
@@ -98,7 +99,7 @@ export const OvertimeRequestsPage: React.FC = () => {
       setReason('');
       refetchMy();
     } catch (err) {
-      toast.danger('Submission Failed', err instanceof Error ? err.message : 'Could not submit overtime request.');
+      toast.danger('Submission Failed', err instanceof Error ? getErrorMessage(err) : 'Could not submit overtime request.');
     } finally {
       setIsSubmitting(false);
     }
@@ -119,7 +120,7 @@ export const OvertimeRequestsPage: React.FC = () => {
       toast.success('Cancelled', 'Overtime request cancelled.');
       refetchMy();
     } catch (err) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Unable to cancel request.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Unable to cancel request.');
     }
   };
 
@@ -144,7 +145,7 @@ export const OvertimeRequestsPage: React.FC = () => {
       setIsApproveModalOpen(false);
       refetchTeam();
     } catch (err) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Could not approve request.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Could not approve request.');
     } finally {
       setIsApproving(false);
     }
@@ -169,7 +170,7 @@ export const OvertimeRequestsPage: React.FC = () => {
       setIsRejectModalOpen(false);
       refetchTeam();
     } catch (err) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Could not reject request.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Could not reject request.');
     } finally {
       setIsRejecting(false);
     }

@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import { useState, useEffect, useCallback } from 'react';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
@@ -117,7 +118,7 @@ export function useTasksList() {
       setTasks(res.items || []);
       setTotal(res.total ?? (res.items || []).length);
     } catch (err) {
-      setError(err.message || 'Failed to fetch tasks.');
+      setError(getErrorMessage(err, 'Failed to fetch tasks.'));
     } finally {
       setIsLoading(false);
     }
@@ -169,7 +170,7 @@ export function useTasksList() {
       });
       fetchTasks();
     } catch (err) {
-      setModalError(err.message || 'Failed to create task.');
+      setModalError(getErrorMessage(err, 'Failed to create task.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -196,7 +197,7 @@ export function useTasksList() {
       setIsEditModalOpen(false);
       fetchTasks();
     } catch (err) {
-      setModalError(err.message || 'Failed to update task.');
+      setModalError(getErrorMessage(err, 'Failed to update task.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -217,7 +218,7 @@ export function useTasksList() {
       setIsAssignModalOpen(false);
       fetchTasks();
     } catch (err) {
-      setModalError(err.message || 'Failed to assign task.');
+      setModalError(getErrorMessage(err, 'Failed to assign task.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -237,7 +238,7 @@ export function useTasksList() {
       setIsCancelModalOpen(false);
       fetchTasks();
     } catch (err) {
-      setModalError(err.message || 'Failed to cancel task.');
+      setModalError(getErrorMessage(err, 'Failed to cancel task.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -257,7 +258,7 @@ export function useTasksList() {
       setIsReopenModalOpen(false);
       fetchTasks();
     } catch (err) {
-      setModalError(err.message || 'Failed to reopen task.');
+      setModalError(getErrorMessage(err, 'Failed to reopen task.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -277,7 +278,7 @@ export function useTasksList() {
         toast.success('Task deleted successfully');
         fetchTasks();
       } catch (err) {
-        toast.danger(err.message || 'Failed to delete task');
+        toast.danger(getErrorMessage(err, 'Failed to delete task'));
       }
     }
   };

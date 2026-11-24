@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { NavigateFunction } from 'react-router-dom';
+import { getErrorMessage } from '@/api/client/errorMapper';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { leadsConnector } from '@/connectors/leads.connector';
@@ -92,7 +93,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       if (deptsRes.status === 'fulfilled') setDepartments(deptsRes.value.items || []);
       if (repsRes.status === 'fulfilled') setSalesReps(repsRes.value.items || []);
     } catch (err) {
-      setError(err?.message || 'Failed to load lead details');
+      setError(getErrorMessage(err, 'Failed to load lead details'));
     } finally {
       setIsLoading(false);
     }
@@ -122,7 +123,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       setIsEditOpen(false);
       fetchLeadData();
     } catch (err) {
-      setModalError(err?.message || 'Failed to update lead');
+      setModalError(getErrorMessage(err, 'Failed to update lead'));
     } finally {
       setIsSubmitting(false);
     }
@@ -143,7 +144,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       setIsAssignOpen(false);
       fetchLeadData();
     } catch (err) {
-      setModalError(err?.message || 'Failed to assign lead');
+      setModalError(getErrorMessage(err, 'Failed to assign lead'));
     } finally {
       setIsSubmitting(false);
     }
@@ -160,7 +161,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       setIsQualifyOpen(false);
       fetchLeadData();
     } catch (err) {
-      setModalError(err?.message || 'Failed to qualify lead');
+      setModalError(getErrorMessage(err, 'Failed to qualify lead'));
     } finally {
       setIsSubmitting(false);
     }
@@ -182,7 +183,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       setIsStatusOpen(false);
       fetchLeadData();
     } catch (err) {
-      setModalError(err?.message || 'Failed to update status');
+      setModalError(getErrorMessage(err, 'Failed to update status'));
     } finally {
       setIsSubmitting(false);
     }
@@ -199,7 +200,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       setIsConvertOpen(false);
       fetchLeadData();
     } catch (err) {
-      setModalError(err?.message || 'Failed to convert lead');
+      setModalError(getErrorMessage(err, 'Failed to convert lead'));
     } finally {
       setIsSubmitting(false);
     }
@@ -217,7 +218,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       setActivityForm({ type: 'CALL', title: '', description: '' });
       fetchLeadData();
     } catch (err) {
-      setModalError(err?.message || 'Failed to log activity');
+      setModalError(getErrorMessage(err, 'Failed to log activity'));
     } finally {
       setIsSubmitting(false);
     }
@@ -239,7 +240,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       setFollowUpForm({ scheduledAt: '', note: '' });
       fetchLeadData();
     } catch (err) {
-      setModalError(err?.message || 'Failed to schedule follow-up');
+      setModalError(getErrorMessage(err, 'Failed to schedule follow-up'));
     } finally {
       setIsSubmitting(false);
     }
@@ -251,7 +252,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       toast.success('Follow-up Completed', 'Item archived.');
       fetchLeadData();
     } catch (err) {
-      toast.danger('Action Failed', err?.message || 'Could not complete follow-up.');
+      toast.danger('Action Failed', getErrorMessage(err, 'Could not complete follow-up.'));
     }
   };
 
@@ -270,7 +271,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
         toast.success('Lead Deleted', `Lead ${lead.leadCode} soft-deleted.`);
         navigate('/leads');
       } catch (err) {
-        toast.danger('Delete Failed', err?.message || 'Unable to delete lead.');
+        toast.danger('Delete Failed', getErrorMessage(err, 'Unable to delete lead.'));
       }
     }
   };
@@ -282,7 +283,7 @@ export function useLeadDetail(id: string | undefined, navigate: NavigateFunction
       toast.success('Lead Restored', `Lead ${lead.leadCode} is now active.`);
       fetchLeadData();
     } catch (err) {
-      toast.danger('Restore Failed', err?.message || 'Unable to restore lead.');
+      toast.danger('Restore Failed', getErrorMessage(err, 'Unable to restore lead.'));
     }
   };
 

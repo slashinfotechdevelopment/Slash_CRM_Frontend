@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { leaveConnector } from '@/connectors/leave.connector';
@@ -75,7 +76,7 @@ export const LeaveApprovalsPage: React.FC = () => {
       setSelectedRequest(null);
       await loadRequests();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to submit review decision.';
+      const msg = err instanceof Error ? getErrorMessage(err) : 'Failed to submit review decision.';
       setReviewError(msg);
     } finally {
       setIsSubmittingReview(false);

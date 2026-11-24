@@ -136,27 +136,25 @@ export const UserListModals: React.FC<UserListModalsProps> = ({
           )}
 
           {/* Department Selection */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-700">Department</label>
-            <select
-              className="w-full min-h-[42px] px-3.5 py-2 text-sm bg-white border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
-              value={createForm.departments?.[0] || ''}
-              onChange={(e) => {
-                const val = e.target.value;
-                setCreateForm((prev) => ({
-                  ...prev,
-                  departments: val ? [val] : [],
-                }));
-              }}
-            >
-              <option value="">Select Primary Department (Optional)</option>
-              {availableDepartments.map((dept) => (
-                <option key={dept.id} value={dept.id}>
-                  {dept.name} ({dept.code})
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            label="Department"
+            placeholder="Select Primary Department (Optional)"
+            value={createForm.departments?.[0] || ''}
+            options={[
+              { value: '', label: 'Select Primary Department (Optional)' },
+              ...availableDepartments.map((dept) => ({
+                value: dept.id,
+                label: `${dept.name} (${dept.code})`,
+              })),
+            ]}
+            onChange={(e) => {
+              const val = e.target.value;
+              setCreateForm((prev) => ({
+                ...prev,
+                departments: val ? [val] : [],
+              }));
+            }}
+          />
 
           {/* Role Selection */}
           <div className="space-y-1.5">

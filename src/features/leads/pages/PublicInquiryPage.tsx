@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState } from 'react';
 import { leadsConnector } from '@/connectors/leads.connector';
 import { Button } from '@/components/ui/Button';
@@ -60,7 +61,7 @@ export const PublicInquiryPage: React.FC = () => {
       setIsSuccess(true);
     } catch (err) {
       setErrorMessage(
-        err.message || 'Unable to submit your inquiry at this moment. Please try again.'
+        getErrorMessage(err, 'Unable to submit your inquiry at this moment. Please try again.')
       );
     } finally {
       setIsLoading(false);

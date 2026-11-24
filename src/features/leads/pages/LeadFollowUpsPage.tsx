@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getErrorMessage } from '@/api/client/errorMapper';
 import { ListPage } from '@/components/templates/ListPage';
 import { ColumnDef } from '@/components/templates/DataTable';
 import { Button } from '@/components/ui/Button';
@@ -24,7 +25,7 @@ export const LeadFollowUpsPage: React.FC = () => {
       const res = await leadsConnector.getMyFollowUps((statusFilter as FollowUpStatus) || undefined);
       setFollowUps(res);
     } catch (err) {
-      toast.danger('Error', err?.message || 'Failed to load follow-ups.');
+      toast.danger('Error', getErrorMessage(err, 'Failed to load follow-ups.'));
     } finally {
       setIsLoading(false);
     }
@@ -43,7 +44,7 @@ export const LeadFollowUpsPage: React.FC = () => {
       toast.success('Completed', 'Follow-up marked as completed.');
       fetchFollowUps();
     } catch (err) {
-      toast.danger('Error', err?.message || 'Could not update status.');
+      toast.danger('Error', getErrorMessage(err, 'Could not update status.'));
     }
   };
 

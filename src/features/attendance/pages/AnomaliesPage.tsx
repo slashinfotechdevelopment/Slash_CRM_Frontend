@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/api/client/errorMapper';
 import React, { useState } from 'react';
 import { ListPage } from '@/components/templates/ListPage';
 import { useInfiniteList } from '@/hooks/useInfiniteList';
@@ -62,7 +63,7 @@ export const AnomaliesPage: React.FC = () => {
       const details = await attendanceConnector.getAnomalyDetails(recordId);
       setSelectedAnomaly(details);
     } catch (err) {
-      toast.danger('Error', err instanceof Error ? err.message : 'Failed to fetch anomaly details.');
+      toast.danger('Error', err instanceof Error ? getErrorMessage(err) : 'Failed to fetch anomaly details.');
     } finally {
       setLoadingDetail(false);
     }
@@ -97,7 +98,7 @@ export const AnomaliesPage: React.FC = () => {
       setIsResolveOpen(false);
       refetch();
     } catch (err) {
-      toast.danger('Action Failed', err instanceof Error ? err.message : 'Could not resolve anomaly.');
+      toast.danger('Action Failed', err instanceof Error ? getErrorMessage(err) : 'Could not resolve anomaly.');
     } finally {
       setIsResolving(false);
     }
