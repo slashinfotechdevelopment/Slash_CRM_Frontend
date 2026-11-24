@@ -1,0 +1,398 @@
+[
+  {
+    "sl": 44,
+    "method": "POST",
+    "path": "/api/attendance/shifts",
+    "status": 201,
+    "pass": "PASS",
+    "screen": "Shifts Management",
+    "details": "Created test shift definition"
+  },
+  {
+    "sl": 45,
+    "method": "GET",
+    "path": "/api/attendance/shifts",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Shifts Management",
+    "details": "Listed shifts with pagination"
+  },
+  {
+    "sl": 52,
+    "method": "GET",
+    "path": "/api/attendance/shifts/:id",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Shifts Management",
+    "details": "Retrieved shift details"
+  },
+  {
+    "sl": 53,
+    "method": "PATCH",
+    "path": "/api/attendance/shifts/:id",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Shifts Management",
+    "details": "Updated shift name"
+  },
+  {
+    "sl": 49,
+    "method": "POST",
+    "path": "/api/attendance/shifts/assign",
+    "status": 201,
+    "pass": "PASS",
+    "screen": "Shifts Management",
+    "details": "Assigned shift to employee"
+  },
+  {
+    "sl": 48,
+    "method": "GET",
+    "path": "/api/attendance/shifts/assignments/:userId",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Shifts Management",
+    "details": "Listed employee shift assignments"
+  },
+  {
+    "sl": 46,
+    "method": "GET",
+    "path": "/api/attendance/shifts/my-assignments",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "My Attendance",
+    "details": "Listed logged-in user assignments"
+  },
+  {
+    "sl": 47,
+    "method": "GET",
+    "path": "/api/attendance/shifts/effective/:userId",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Team Attendance",
+    "details": "Retrieved effective shift on target date"
+  },
+  {
+    "sl": 50,
+    "method": "PATCH",
+    "path": "/api/attendance/shifts/assignments/:assignmentId",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Shifts Management",
+    "details": "Updated shift assignment end date"
+  },
+  {
+    "sl": 51,
+    "method": "DELETE",
+    "path": "/api/attendance/shifts/assignments/:assignmentId",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Shifts Management",
+    "details": "Deleted shift assignment"
+  },
+  {
+    "sl": 54,
+    "method": "DELETE",
+    "path": "/api/attendance/shifts/:id",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Shifts Management",
+    "details": "Deleted shift definition"
+  },
+  {
+    "sl": 37,
+    "method": "POST",
+    "path": "/api/attendance/check-in",
+    "status": 201,
+    "pass": "PASS",
+    "screen": "My Attendance",
+    "details": "Recorded check-in session"
+  },
+  {
+    "sl": 41,
+    "method": "GET",
+    "path": "/api/attendance/today",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "My Attendance",
+    "details": "Retrieved today status & active session"
+  },
+  {
+    "sl": 39,
+    "method": "POST",
+    "path": "/api/attendance/breaks/start",
+    "status": 201,
+    "pass": "PASS",
+    "screen": "My Attendance",
+    "details": "Started employee break"
+  },
+  {
+    "sl": 40,
+    "method": "POST",
+    "path": "/api/attendance/breaks/end",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "My Attendance",
+    "details": "Ended employee break"
+  },
+  {
+    "sl": 38,
+    "method": "POST",
+    "path": "/api/attendance/check-out",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "My Attendance",
+    "details": "Recorded check-out session"
+  },
+  {
+    "sl": 42,
+    "method": "GET",
+    "path": "/api/attendance/history",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Team Attendance / My Attendance",
+    "details": "Retrieved attendance history"
+  },
+  {
+    "sl": 43,
+    "method": "POST",
+    "path": "/api/attendance/records/:recordId/recalculate",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Team Attendance",
+    "details": "Recalculated attendance record"
+  },
+  {
+    "sl": 55,
+    "method": "POST",
+    "path": "/api/attendance/overtime",
+    "status": 201,
+    "pass": "PASS",
+    "screen": "Overtime Requests",
+    "details": "Submitted overtime request"
+  },
+  {
+    "sl": 56,
+    "method": "GET",
+    "path": "/api/attendance/overtime/my-requests",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Overtime Requests",
+    "details": "Listed own overtime requests"
+  },
+  {
+    "sl": 57,
+    "method": "GET",
+    "path": "/api/attendance/overtime",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Overtime Requests",
+    "details": "Listed manager view overtime requests"
+  },
+  {
+    "sl": 58,
+    "method": "POST",
+    "path": "/api/attendance/overtime/:id/approve",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Overtime Requests",
+    "details": "Approved overtime request"
+  },
+  {
+    "sl": 59,
+    "method": "POST",
+    "path": "/api/attendance/overtime/:id/reject",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Overtime Requests",
+    "details": "Rejected overtime request"
+  },
+  {
+    "sl": 60,
+    "method": "POST",
+    "path": "/api/attendance/overtime/:id/cancel",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Overtime Requests",
+    "details": "Cancelled own overtime request"
+  },
+  {
+    "sl": 61,
+    "method": "POST",
+    "path": "/api/attendance/wfh",
+    "status": 201,
+    "pass": "PASS",
+    "screen": "WFH Requests",
+    "details": "Submitted WFH request"
+  },
+  {
+    "sl": 62,
+    "method": "GET",
+    "path": "/api/attendance/wfh/my-requests",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "WFH Requests",
+    "details": "Listed own WFH requests"
+  },
+  {
+    "sl": 63,
+    "method": "GET",
+    "path": "/api/attendance/wfh",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "WFH Requests",
+    "details": "Listed manager view WFH requests"
+  },
+  {
+    "sl": 64,
+    "method": "POST",
+    "path": "/api/attendance/wfh/:id/approve",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "WFH Requests",
+    "details": "Approved WFH request"
+  },
+  {
+    "sl": 65,
+    "method": "POST",
+    "path": "/api/attendance/wfh/:id/reject",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "WFH Requests",
+    "details": "Rejected WFH request"
+  },
+  {
+    "sl": 66,
+    "method": "POST",
+    "path": "/api/attendance/wfh/:id/cancel",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "WFH Requests",
+    "details": "Cancelled own WFH request"
+  },
+  {
+    "sl": 67,
+    "method": "POST",
+    "path": "/api/attendance/corrections",
+    "status": 201,
+    "pass": "PASS",
+    "screen": "Corrections",
+    "details": "Submitted attendance correction request"
+  },
+  {
+    "sl": 68,
+    "method": "GET",
+    "path": "/api/attendance/corrections/my-requests",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Corrections",
+    "details": "Listed own correction requests"
+  },
+  {
+    "sl": 69,
+    "method": "GET",
+    "path": "/api/attendance/corrections",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Corrections",
+    "details": "Listed manager view correction requests"
+  },
+  {
+    "sl": 70,
+    "method": "GET",
+    "path": "/api/attendance/corrections/:id",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Corrections",
+    "details": "Retrieved correction request details"
+  },
+  {
+    "sl": 72,
+    "method": "POST",
+    "path": "/api/attendance/corrections/:id/approve",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Corrections",
+    "details": "Approved correction request"
+  },
+  {
+    "sl": 73,
+    "method": "POST",
+    "path": "/api/attendance/corrections/:id/reject",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Corrections",
+    "details": "Rejected correction request"
+  },
+  {
+    "sl": 71,
+    "method": "POST",
+    "path": "/api/attendance/corrections/:id/cancel",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Corrections",
+    "details": "Cancelled own correction request"
+  },
+  {
+    "sl": 74,
+    "method": "POST",
+    "path": "/api/attendance/reconciliation/run",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "EOD Reconciliation",
+    "details": "Triggered EOD reconciliation run"
+  },
+  {
+    "sl": 75,
+    "method": "GET",
+    "path": "/api/attendance/reconciliation/runs",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "EOD Reconciliation",
+    "details": "Listed past reconciliation runs"
+  },
+  {
+    "sl": 76,
+    "method": "GET",
+    "path": "/api/attendance/reconciliation/runs/:id",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "EOD Reconciliation",
+    "details": "Retrieved reconciliation run details"
+  },
+  {
+    "sl": 77,
+    "method": "GET",
+    "path": "/api/attendance/reconciliation/status",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "EOD Reconciliation",
+    "details": "Queried employee reconciliation health"
+  },
+  {
+    "sl": 78,
+    "method": "GET",
+    "path": "/api/attendance/anomalies",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Quarantined Anomalies",
+    "details": "Listed quarantined anomalies"
+  },
+  {
+    "sl": 79,
+    "method": "GET",
+    "path": "/api/attendance/anomalies/:recordId",
+    "status": 200,
+    "pass": "PASS",
+    "screen": "Quarantined Anomalies",
+    "details": "Retrieved record anomaly breakdown"
+  },
+  {
+    "sl": 80,
+    "method": "POST",
+    "path": "/api/attendance/anomalies/:recordId/resolve",
+    "status": 400,
+    "pass": "PASS",
+    "screen": "Quarantined Anomalies",
+    "details": "Validated resolve/dismiss anomaly endpoint"
+  }
+]
